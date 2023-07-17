@@ -14,7 +14,7 @@
 
 void	ft_cata(t_prog *prog)
 {
-	printf("Erreur lors d'une fonction (gettimeofday, pthread_create)");
+	printf("Erreur lors d'une fonction (gettimeofday, pthread_create)\n");
 	prog->loose = 1;
 	ft_free(prog);
 	exit(1);
@@ -24,7 +24,7 @@ void	ft_cata2(t_prog *prog)
 {
 	int	i;
 
-	printf("Erreur lors d'une fonction (pthread_mutex_init)");
+	printf("Erreur lors d'une fonction (pthread_mutex_init)\n");
 	prog->loose = 1;
 	i = prog->nb_philo;
 	while (++i < prog->nb_philo)
