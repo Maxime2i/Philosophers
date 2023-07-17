@@ -37,14 +37,6 @@ void	philo_sleep(t_philo *philo)
 	}
 }
 
-long long	timestampa(t_prog *input)
-{
-	struct timeval	current;
-
-	gettimeofday(&current, NULL);
-	return (((current.tv_sec * 1000) + (current.tv_usec / 1000)) - input->time);
-}
-
 void	philo_eat(t_philo *philo)
 {
 	if (philo->prog->loose == 0)
