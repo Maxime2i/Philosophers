@@ -21,7 +21,7 @@ void	check_number(char **av)
 	{
 		if (is_number(av[i]) != 0)
 		{
-			printf("Error : Entrez seulement des nombres positifs");
+			printf("Error : Entrez seulement des nombres positifs\n");
 			exit(1);
 		}
 		i++;
@@ -35,7 +35,7 @@ int	check_arg(int ac, char **av)
 
 	if (ac != 5 && ac != 6)
 	{
-		printf("Error : nombre d'arguments");
+		printf("Error : nombre d'arguments\n");
 		return (1);
 	}
 	check_number(av);
@@ -45,12 +45,12 @@ int	check_arg(int ac, char **av)
 		res = ft_atoi(av[i]);
 		if (i == 1 && res > 200)
 		{
-			printf("Error : nombre de philosophe");
+			printf("Error : nombre de philosophe\n");
 			return (1);
 		}
 		if (res <= 0)
 		{
-			printf("Error : Entrez seulement des temps positifs");
+			printf("Error : Entrez seulement des temps positifs\n");
 			return (1);
 		}
 	}
