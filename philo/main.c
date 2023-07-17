@@ -6,7 +6,7 @@
 /*   By: mlangloi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 15:27:20 by mlangloi          #+#    #+#             */
-/*   Updated: 2023/07/16 16:51:08 by mlangloi         ###   ########.fr       */
+/*   Updated: 2023/07/17 16:51:50 by mlangloi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_check_finish(t_prog *prog)
 	while (i < prog->nb_philo)
 	{
 		if (prog->max_eat > 0
-			&& prog->philo[i].nb_repas == prog->max_eat)
+			&& prog->philo[i].nb_repas >= prog->max_eat)
 			a++;
 		ft_check_die(&prog->philo[i]);
 		i++;
