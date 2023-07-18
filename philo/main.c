@@ -20,10 +20,7 @@ void	ft_check_die(t_philo *philo)
 	diff = ft_get_time(philo->prog) - philo->der_repas;
 	if (diff >= philo->prog->t_die)
 	{
-		pthread_mutex_lock(&philo->prog->write);
-		if (philo->prog->write_die == 0)
-			printf("%lld\t%d\t%s\n", ft_get_time(philo->prog), philo->id, "died");
-		pthread_mutex_unlock(&philo->prog->write);
+		ft_print_mes(philo, philo->id, "died");
 		philo->prog->loose = 1;
 		philo->prog->write_die = 1;
 	}
@@ -36,17 +33,10 @@ void	*ft_solitude(void *phi)
 
 	philo = (t_philo *)phi;
 	pthread_mutex_lock(&philo->prog->fork[philo->l_fork]);
-	pthread_mutex_lock(&philo->prog->write);
-	if (philo->prog->write_die == 0)
-		printf("%lld\t%d\t%s\n", ft_get_time(philo->prog),
-			philo->id, "has taken a fork");
-	pthread_mutex_unlock(&philo->prog->write);
+	ft_print_mes(philo, philo->id, "has taken a fork");
 	philo->der_repas = ft_get_time(philo->prog);
 	ft_time(philo, philo->prog->t_die);
-	pthread_mutex_lock(&philo->prog->write);
-	if (philo->prog->write_die == 0)
-		printf("%lld\t%d\t%s\n", ft_get_time(philo->prog), philo->id, "died");
-	pthread_mutex_unlock(&philo->prog->write);
+	ft_print_mes(philo, philo->id, "died");
 	philo->prog->loose = 1;
 	return (NULL);
 }
@@ -91,6 +81,11 @@ void	ft_create(t_prog *prog)
 		while (prog->loose == 0)
 		{
 			ft_check_finish(prog);
+			if (prog->error == 1)
+			{
+				printf("Error : fonction gettimeofday\n");
+				break ;
+			}
 		}
 	}
 }

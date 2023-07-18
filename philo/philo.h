@@ -81,5 +81,6 @@ void		philo_think(t_philo *philo);
 void		philo_sleep(t_philo *philo);
 void		philo_eat(t_philo *philo);
 void		*ft_routine(void *phi);
+void		ft_print_mes(t_philo *philo, int nb, char *str);
 
 #endif

@@ -12,15 +12,22 @@
 
 #include"philo.h"
 
+void	ft_print_mes(t_philo *philo, int nb, char *str)
+{
+	long long	time;
+
+	pthread_mutex_lock(&philo->prog->write);
+	time = ft_get_time(philo->prog);
+	if (philo->prog->write_die == 0 && philo->prog->error == 0)
+		printf("%lld\t%d\t%s\n", time, nb, str);
+	pthread_mutex_unlock(&philo->prog->write);
+}
+
 void	philo_think(t_philo *philo)
 {
 	if (philo->prog->loose == 0)
 	{
-		pthread_mutex_lock(&philo->prog->write);
-		if (philo->prog->write_die == 0)
-			printf("%lld\t%d\t%s\n", ft_get_time(philo->prog),
-				philo->id, "is thinking");
-		pthread_mutex_unlock(&philo->prog->write);
+		ft_print_mes(philo, philo->id, "is thinking");
 	}
 }
 
@@ -28,11 +35,7 @@ void	philo_sleep(t_philo *philo)
 {
 	if (philo->prog->loose == 0)
 	{
-		pthread_mutex_lock(&philo->prog->write);
-		if (philo->prog->write_die == 0)
-			printf("%lld\t%d\t%s\n", ft_get_time(philo->prog),
-				philo->id, "is sleeping");
-		pthread_mutex_unlock(&philo->prog->write);
+		ft_print_mes(philo, philo->id, "is sleeping");
 		ft_time(philo, philo->prog->t_sleep);
 	}
 }
@@ -42,22 +45,10 @@ void	philo_eat(t_philo *philo)
 	if (philo->prog->loose == 0)
 	{
 		pthread_mutex_lock(&philo->prog->fork[philo->l_fork]);
-		pthread_mutex_lock(&philo->prog->write);
-		if (philo->prog->write_die == 0)
-			printf("%lld\t%d\t%s\n", ft_get_time(philo->prog),
-				philo->id, "has taken a fork");
-		pthread_mutex_unlock(&philo->prog->write);
+		ft_print_mes(philo, philo->id, "has taken a fork");
 		pthread_mutex_lock(&philo->prog->fork[philo->r_fork]);
-		pthread_mutex_lock(&philo->prog->write);
-		if (philo->prog->write_die == 0)
-			printf("%lld\t%d\t%s\n", ft_get_time(philo->prog),
-				philo->id, "has taken a fork");
-		pthread_mutex_unlock(&philo->prog->write);
-		pthread_mutex_lock(&philo->prog->write);
-		if (philo->prog->write_die == 0)
-			printf("%lld\t%d\t%s\n", ft_get_time(philo->prog),
-				philo->id, "is eating");
-		pthread_mutex_unlock(&philo->prog->write);
+		ft_print_mes(philo, philo->id, "has taken a fork");
+		ft_print_mes(philo, philo->id, "is eating");
 		philo->der_repas = ft_get_time(philo->prog);
 		philo->nb_repas++;
 		ft_time(philo, philo->prog->t_eat);

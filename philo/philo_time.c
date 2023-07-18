@@ -49,7 +49,11 @@ long long	ft_get_time(t_prog *prog)
 
 	res = gettimeofday(&time, NULL);
 	if (res == -1)
-		ft_cata(prog);
+	{
+		prog->error = 1;
+		prog->write_die = 1;
+		return (9223372036854775807);
+	}
 	return (((time.tv_sec * 1000) + (time.tv_usec / 1000)) - prog->time);
 }
 
@@ -62,7 +66,7 @@ void	ft_time(t_philo *philo, long long time)
 	while (1)
 	{
 		diff = ft_get_time(philo->prog) - t;
-		if (diff >= time)
+		if (diff >= time || diff == 9223372036854775807 - t)
 			break ;
 		usleep(1000);
 	}
