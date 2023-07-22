@@ -57,23 +57,6 @@ int	check_arg(int ac, char **av)
 	return (0);
 }
 
-void	ft_init_philo(t_prog	*prog)
-{
-	int	i;
-
-	i = 0;
-	while (i < prog->nb_philo)
-	{
-		prog->philo[i].id = i + 1;
-		prog->philo[i].nb_repas = 0;
-		prog->philo[i].der_repas = 0;
-		prog->philo[i].l_fork = i;
-		prog->philo[i].r_fork = (i + 1) % prog->nb_philo;
-		prog->philo[i].prog = prog;
-		i++;
-	}
-}
-
 void	ft_init_prog(char **av, t_prog *prog)
 {
 	prog = ft_init_prog2(prog, av);
@@ -81,30 +64,36 @@ void	ft_init_prog(char **av, t_prog *prog)
 		prog->max_eat = ft_atoi(av[5]);
 	else
 		prog->max_eat = 0;
-	prog->philo = ft_calloc(prog->nb_philo, (sizeof(t_philo)));
-	if (prog->philo == NULL)
-		ft_exit(prog);
-	prog->fork = ft_calloc(prog->nb_philo, (sizeof(pthread_mutex_t)));
-	if (prog->fork == NULL)
-		ft_exit(prog);
-	ft_init_mutex(prog);
-	prog = ft_init_prog3(prog);
+	prog->table = ft_calloc(prog->nb_philo, sizeof(int));
+	if (!prog->table)
+		exit(1);
+}
+
+void	ft_init_sem(t_prog *prog)
+{
+	prog->fork = sem_open("forks", O_CREAT | O_EXCL, 0644, prog->nb_philo);
+	if (prog->fork == SEM_FAILED || sem_unlink("forks"))
+		printf("Error : semaphore\n");
 }
 
 void	ft_free(t_prog *prog)
 {
+	int	res;
 	int	i;
 
-	i = prog->nb_philo;
-	while (--i >= 0)
-		pthread_join(prog->philo[i].tid, NULL);
+	i = -1;
 	while (++i < prog->nb_philo)
-		pthread_mutex_destroy(&prog->fork[i]);
-	pthread_mutex_destroy(&prog->write);
-	pthread_mutex_destroy(&prog->checker);
-	pthread_mutex_destroy(&prog->loo);
-	pthread_mutex_destroy(&prog->eat_max);
-	free(prog->philo);
-	free(prog->fork);
+	{
+		waitpid(-1, &res, 0);
+		if (res != 0)
+		{
+			i = 0;
+			while (i < prog->nb_philo)
+				kill(prog->table[i++], 15);
+			break ;
+		}
+	}
+	sem_close(prog->fork);
+	free(prog->table);
 	free(prog);
 }

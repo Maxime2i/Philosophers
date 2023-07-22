@@ -18,73 +18,53 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <semaphore.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 typedef struct s_prog	t_prog;
 typedef struct s_philo	t_philo;
 
 typedef struct s_philo
 {
-	pthread_t	tid;
 	int			id;
 	int			nb_repas;
 	long long	der_repas;
-	int			l_fork;
-	int			r_fork;
+	int			die;
 	t_prog		*prog;
 }	t_philo;
 
 typedef struct s_prog
 {
-	t_philo			*philo;
 	int				nb_philo;
 	long long		time;
 	long long		t_die;
 	long long		t_eat;
 	long long		t_sleep;
 	int				max_eat;
-	int				error;
-	int				end_eat;
-	int				loose;
-	pthread_mutex_t	*fork;
-	pthread_mutex_t	checker;
-	pthread_mutex_t	write;
-	pthread_mutex_t	loo;
-	pthread_mutex_t	eat_max;
-	int				write_die;
+	int				*table;
+	sem_t			*fork;
 }	t_prog;
 
-// philo_init.c
+void		philo_fork(t_philo *philo);
+void		ft_init_sem(t_prog *prog);
 int			check_arg(int ac, char **av);
 void		ft_init_prog(char **av, t_prog *prog);
-void		ft_init_philo(t_prog	*prog);
 void		check_number(char **av);
 void		ft_free(t_prog *prog);
-
-// philo_init2.c
 t_prog		*ft_init_prog2(t_prog *prog, char **av);
-t_prog		*ft_init_prog3(t_prog *prog);
-void		ft_exit(t_prog *prog);
-void		ft_init_mutex(t_prog *prog);
-void		*ft_solitude(void *phi);
-
-// utils.c
 int			ft_atoi(const char *nptr);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		ft_bzero(void *s, size_t n);
 int			is_number(char *nb);
-
-// philo_time.c
-long long	ft_get_time(t_prog *prog);
-long long	start_time(t_prog *prog);
-void		ft_cata(t_prog *prog);
-void		ft_cata2(t_prog *prog);
-int			ft_loose(t_prog *prog);
-
-// philo_routine.c
+long long	ft_get_time(void);
+long long	ft_time(t_philo *philo);
 void		philo_think(t_philo *philo);
 void		philo_sleep(t_philo *philo);
-void		philo_eat(t_philo *philo, int lf, int rf);
-void		*ft_routine(void *phi);
+void		philo_eat(t_philo *philo);
+void		*ft_routine(t_philo *philo);
 void		ft_print_mes(t_philo *philo, int nb, char *str);
 
 #endif

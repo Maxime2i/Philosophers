@@ -50,3 +50,35 @@ void	ft_exit(t_prog *prog)
 		free(prog);
 	exit(1);
 }
+
+void	ft_init_mutex(t_prog *prog)
+{
+	int	res;
+
+	res = pthread_mutex_init(&prog->write, NULL);
+	if (res != 0)
+		ft_cata2(prog);
+	res = pthread_mutex_init(&prog->checker, NULL);
+	if (res != 0)
+		ft_cata2(prog);
+	res = pthread_mutex_init(&prog->loo, NULL);
+	if (res != 0)
+		ft_cata2(prog);
+	res = pthread_mutex_init(&prog->eat_max, NULL);
+	if (res != 0)
+		ft_cata2(prog);
+}
+
+void	*ft_solitude(void *phi)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)phi;
+	pthread_mutex_lock(&philo->prog->fork[philo->l_fork]);
+	ft_print_mes(philo, philo->id, "has taken a fork");
+	philo->der_repas = ft_get_time(philo->prog);
+	usleep(philo->prog->t_die * 1000);
+	ft_print_mes(philo, philo->id, "died");
+	philo->prog->loose = 1;
+	return (NULL);
+}
