@@ -68,7 +68,7 @@ void		ft_init_mutex(t_prog *prog);
 void		*ft_solitude(void *phi);
 
 // utils.c
-int			ft_atoi(const char *nptr);
+long		ft_atoi(const char *nptr);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		ft_bzero(void *s, size_t n);
 int			is_number(char *nb);

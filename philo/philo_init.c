@@ -50,7 +50,7 @@ int	check_arg(int ac, char **av)
 		}
 		if (res <= 0)
 		{
-			printf("Error : Entrez seulement des temps positifs\n");
+			printf("Error : 0 > time > 2147483648\n");
 			return (1);
 		}
 	}
