@@ -86,8 +86,15 @@ void	ft_create_2(t_prog *prog)
 
 void	ft_create(t_prog *prog)
 {
+	int	res;
+
 	if (prog->nb_philo == 1)
-		ft_solitude(prog->philo);
+	{
+		res = pthread_create(&prog->philo[0].tid, NULL,
+				&ft_solitude, (void *) &prog->philo[0]);
+		if (res != 0)
+			ft_cata(prog);
+	}
 	else
 		ft_create_2(prog);
 }

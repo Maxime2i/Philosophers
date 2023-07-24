@@ -76,6 +76,7 @@ void	*ft_solitude(void *phi)
 	philo = (t_philo *)phi;
 	pthread_mutex_lock(&philo->prog->fork[philo->l_fork]);
 	ft_print_mes(philo, philo->id, "has taken a fork");
+	pthread_mutex_unlock(&philo->prog->fork[philo->l_fork]);
 	philo->der_repas = ft_get_time(philo->prog);
 	usleep(philo->prog->t_die * 1000);
 	ft_print_mes(philo, philo->id, "died");
