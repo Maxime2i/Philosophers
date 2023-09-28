@@ -54,7 +54,7 @@ void	ft_check_finish(t_prog *prog)
 			pthread_mutex_unlock(&prog->loo);
 		}
 	}
-	usleep(1500);
+	usleep(9000);
 }
 
 void	ft_create_2(t_prog *prog)
